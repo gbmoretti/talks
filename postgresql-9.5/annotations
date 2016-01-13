@@ -1,0 +1,102 @@
+# Postgresql 9.5 - Principais novas features
+## Row-level security policy (RLS)
+- Ou política de segurança por registro (tradução livre)
+- Você consegue definir quais registros cada usuário do banco pode ver numa mesma tabela
+- Ex:
+Dado a tabela `house_alliances`
+Com os seguintes dados
+id | house         | allied_with
+1  | lannister     | frey
+2  | stark         | frey
+3  | stark         | karstark
+4  | lannister     | tyrell
+
+Posso criar uma política de segurança assim:
+```
+CREATE POLICY policy_user_alliances ON house_alliances
+   FOR ALL
+   TO PUBLIC
+   USING (username = current_user);
+```
+- E quando eu fizer a consulta `SELECT * FROM house_alliances` com o usuário _stark_ ela retorna:
+id | house         | allied_with
+2  | stark         | frey
+3  | stark         | karstark
+
+- E com o usuario _lannister_:
+id | house         | allied_with
+1  | lannister     | frey
+4  | lannister     | tyrell
+
+- Não parece ser grande coisa porque a maioria de nós prefere deixar a lógico de politicas
+de acesso na aplicação, o que faz muito sentido na maioria dos casos
+- Mas é uma grande feature para quem usa o Postgrest por exemplo
+
+## Block-range Indexes (BRIN)
+- Ou Indices de Blocos
+- Um indice em blocos de paginas e nao pagina por pagina
+- Significa que você abre mão de apenas uma busca numa arvore binaria para uma busca em uma arvore menor
+e depois uma busca sequencial em um bloco menor de registros
+- Para ganhar em tamanho do indice, que ocupa muito menos espaço e demanda menos manutenção.
+
+(desenho de uma BTREE "grande" e como é a busca nesse arvore)
+(outro desenho de uma BTREE bem menor e com 'blocos' nas folhas. mostrar a busca na arvore e depois sequencial no bloco)
+
+## Foreign Table Inheritance
+- Ou herança de tabela estrangeira
+- Primeiro, alguns conceitos nao muito comuns em outros bancos de dados
+- Herança de tabela: serve basicamente para particionar uma tabela gigante:
+- - `dead_characters_a_m` e `dead_characters_n_z` herdam de `dead_characters`
+- Dados estrangeiros: são dados que estão fora do banco de dados (numa instancia do mongodb por exemplo)
+e que você pode usar SQL para fazer consultas porque o postgresql implementa uma interface com esse serviço externo
+- FTI portanto é particionamento de dados entre um serviço externo e o postgresql
+
+## UPSERT
+- Basicamente: 'insira ou atualize'
+- Dado uma tabela `houses`
+house
+Lannister
+Stark
+Martell
+
+- Como o comando `INSERT INTO houses (house) VALUES ('Stark','Baratheon') ON CONFLICT DO NOTHING`
+- Será inserido apenas os registros que nao deram conflito e ignorar os outros
+house
+Lannister
+Stark
+Martell
+Baratheon
+
+- Outro exemplo
+- Dado a tabela `characters`
+name            | childs
+Ned Stark       | 5
+Tywin Lannister | 2
+
+- Com o comando
+`INSERT INTO characters (name, childs) VALUES ('Ned Stark', 1), ('Robert Baratheon', 3)
+ON CONFLICT (childs)
+DO UPDATE SET childs = characters.childs + EXCLUDED.childs`
+- Vai ser somado a quantidade de `childs` nos registros com conflito
+name             | childs
+Ned Stark        | 6
+Tywin Lannister  | 2
+Robert Baratheon | 3
+
+## Novos operadores e funções para JSONB
+- `jsonb || jsonb`` (concatenação)
+- - `{"evento": "rupy"} || {"local": "TW"}` => `{"evento": "rupy", "local": "TW"}`
+- `jsonb - text/int` (remoção de chave ou elemento de array)
+- - `{"evento": "rupy", "local": "TW"} - 'evento'` => `{"local": "TW"}`
+- - `["azul","verde","vermelho"] - 1` => `["azul", "vermelho"]`
+- `json #- text[]` (remoção de chave ou elemento da array no path json)
+- - `{"evento": "rupy", "local": "TW", "linguagens": ["ruby", "python"]} #- '{linguagens,0}'` => `{{"evento": "rupy", "local": "TW", "linguagens": ["python"]}}`
+- Funçao `jsonb_set` (insere ou atualiza)
+- - `jsonb_set(jsonb_a_ser_atualizado, path, novo_valor, cria_se_inexistente=true)`
+- - `jsonb_set('{"evento": "rupy", "linguagens": ["python"]}','{linguagens,2}',"ruby")` => `{"evento": "rupy", "local": "TW", "linguagens": ["ruby", "python"]}`
+- Funçao `json_pretty` (imprissão amigavel)
+
+## Outras features/melhorias
+- Otimização de ordenações (até 3x mais rapidas para ordenação em um campo `TEXT`)
+- Trocar tabela `UNLOGGED` para `LOGGED` (ou vice-versa) sem precisar replicar a tabela
+-
