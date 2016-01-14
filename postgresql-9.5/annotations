@@ -28,13 +28,14 @@ id | house         | allied_with
 1  | lannister     | frey
 4  | lannister     | tyrell
 
+- Alem de SELECT as RLS funcionam também com UPDATE, INSERT e DELETE
 - Não parece ser grande coisa porque a maioria de nós prefere deixar a lógico de politicas
 de acesso na aplicação, o que faz muito sentido na maioria dos casos
 - Mas é uma grande feature para quem usa o Postgrest por exemplo
 
 ## Block-range Indexes (BRIN)
 - Ou Indices de Blocos
-- Um indice em blocos de paginas e nao pagina por pagina
+- Um indice que guarda blocos de paginas e nao pagina por pagina
 - Significa que você abre mão de apenas uma busca numa arvore binaria para uma busca em uma arvore menor
 e depois uma busca sequencial em um bloco menor de registros
 - Para ganhar em tamanho do indice, que ocupa muito menos espaço e demanda menos manutenção.
@@ -99,4 +100,5 @@ Robert Baratheon | 3
 ## Outras features/melhorias
 - Otimização de ordenações (até 3x mais rapidas para ordenação em um campo `TEXT`)
 - Trocar tabela `UNLOGGED` para `LOGGED` (ou vice-versa) sem precisar replicar a tabela
--
+- Operações analíticas (GROUPING, CUBE, ROLLUP)
+- Melhor escalabilidade vertical
