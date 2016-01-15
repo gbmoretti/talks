@@ -1336,3 +1336,19 @@ html:-moz-full-screen-ancestor {
 
 .zoomed .reveal .roll span:after {
   visibility: hidden; }
+
+.fragment.current-visible.visible.display-none:not(.current-fragment) {
+  display: none;
+  height:0px;
+  line-height: 0px;
+  font-size: 0px;
+}
+
+.reveal .inline-code {
+  background-color: rgba(0,0,0,0.5);
+  padding: 5px;
+}
+
+.reveal table.monospaced {
+  font-family: monospace;
+}

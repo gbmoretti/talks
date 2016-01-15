@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Postgresql 9.5 - O que há de novo</title>
+		<title>PostgreSQL 9.5 - O que há de novo</title>
 
 		<meta name="description" content="Apresentação sobre as novidades da versão 9.5 do PostgreSQL">
 		<meta name="author" content="Guilherme Burille Moretti">
@@ -15,7 +15,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+		<!-- <link rel="stylesheet" href="css/theme/black.css" id="theme"> -->
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -37,23 +38,32 @@
 	<body>
 
 		<div class="reveal">
-
+			<header style="position: absolute;top: 50px; left: 100px; z-index:500; font-size:100px;background-color: rgba(0,0,0,0.5)"></header>
 			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
+			<div class="slides" style="background-image: url('postgres.png'); background-position: bottom right; background-repeat: no-repeat;">
 				<section>
-					<h1>Postgresql 9.5</h1>
-					<h3>O que há de novo</h3>
+					<style>.header1 header:after { content: "Header 1 Example"; }</style>
+					<h1>PostgreSQL 9.5</h1>
+					<h3>O que há de novo?</h3>
 					<p><small>Por <a href="http://github.com/gbmoretti">Guilherme Moretti</a></small></p>
-					<p><small>16/01/2015</small></p>
+					<p><small>16/01/2015 - 4° Encontro da Ruby BH em conjunto com a Python BH</small></p>
 				</section>
 
 				<section>
 					<h2>O que eu NÃO sou</h2>
 					<ul>
+						<li class="fragment">Palestrante profissional</li>
 						<li class="fragment">Commiter do repositório do PostgreSQL</li>
 						<li class="fragment">Especialista em PostgreSQL</li>
 						<li class="fragment">Especialista em banco de dados</li>
-						<li class="fragment">Palestrante profissional</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Eu, por eu mesmo</h2>
+					<ul>
+						<li>Desenvolvedor na Agrid</li>
+						<li>Angular, Ruby e PostgreSQL</li>
 					</ul>
 				</section>
 
@@ -95,7 +105,7 @@
 				</section>
 
 				<section>
-					<h2>Row-level security policy (RLS)</h2>
+					<h1>Row-level security policy (RLS)</h1>
 					<p>Ou política de segurança por registro</p>
 				</section>
 
@@ -110,7 +120,7 @@
 					<h2>Row-level security policy (RLS)</h2>
 					<p>Dado uma tabela:</p>
 
-					<table>
+					<table class="monospaced">
 						<thead>
 							<th>id</th>
 							<th>house</th>
@@ -147,7 +157,7 @@ SELECT * FROM house_alliances;
 				<section>
 					<h2>Row-level security policy (RLS)</h2>
 					<p>E obtenho:</p>
-					<table>
+					<table class="monospaced">
 						<thead>
 							<th>id</th>
 							<th>house</th>
@@ -162,31 +172,44 @@ SELECT * FROM house_alliances;
 
 				<section>
 					<h2>Row-level security policy (RLS)</h2>
-					<p>Funciona tanto para <code>SELECT</code> quanto para <code>UPDATE, INSERT, DELETE</code></p>
+					<p>Funciona também com <code class="inline-code">UPDATE</code>, <code class="inline-code">INSERT</code>, <code class="inline-code">DELETE</code></p>
 				</section>
 
 				<section>
-					<h2>Block-range Indexes (BRIN)</h2>
+					<h1>Block-range Indexes (BRIN)</h1>
 					<p>Ou Índices de blocos</p>
 				</section>
 
 				<section>
 					<h2>Block-range Indexes (BRIN)</h2>
 					<ul>
-						<li>Um indice que ocupa menos espaço</li>
-						<li>Com isso você ganha em tamanho do banco</li>
-						<li>E em performance em INSERT/UPDATE/DELETE</li>
-						<li>Mas a consulta fica um pouco mais lenta</li>
+						<li>Um índice que usa muito menos bytes</li>
+						<li>Com performance melhor para <code class="inline-code">UPDATE</code>/<code class="inline-code">INSERT</code>/<code class="inline-code">DELETE</code></li>
+						<li>Menos performático em consultas</li>
 					</ul>
 				</section>
 
-				<section>
-					<h2>Block-range Indexes (BRIN)</h2>
-					<p>[IMAGEM AQUI TALVEZ]</p>
+				<!-- <section>
+					<section>
+						<h2>BTREE</h2>
+						<img src="btree0.svg" width="800" height="500" class="fragment current-visible display-none">
+						<img src="btree1.svg" width="800" height="500" class="fragment current-visible display-none">
+						<img src="btree2.svg" width="800" height="500" class="fragment current-visible display-none">
+						<img src="btree3.svg" width="800" height="500" class="fragment current-visible display-none">
+						<img src="btree4.svg" width="800" height="500" class="fragment current-visible display-none">
+					</section>
 				</section>
 
 				<section>
-					<h2>Foreign Table Inheritance</h2>
+					<section>
+						<h2>BRIN</h2>
+
+					</section>
+				</section> -->
+
+
+				<section>
+					<h1>Foreign Table Inheritance</h1>
 					<p>Ou herança de tabela estrangeira</p>
 				</section>
 
@@ -199,9 +222,9 @@ SELECT * FROM house_alliances;
 					<section>
 						<h2>Inheritance (herança)</h2>
 						<ul>
-							<li>Basicamente para particionar uma tabela gigante</li>
-							<li>Posso ter duas tabelas <code>dead_characters_a_m</code> e <code>dead_characters_n_z</code></li>
-							<li>Que herdam de <code>dead_characters</code></li>
+							<li>Basicamente particionamento de uma tabela gigante</li>
+							<li>Posso ter duas tabelas <code class="inline-code">dead_characters_a_m</code> e <code class="inline-code">dead_characters_n_z</code></li>
+							<li>Que herdam de <code class="inline-code">dead_characters</code></li>
 							<li>Assim mesmo com uma tabela gigante não perdemos tanta performance</li>
 						</ul>
 					</section>
@@ -210,8 +233,8 @@ SELECT * FROM house_alliances;
 						<h2>Foreign Table</h2>
 						<ul>
 							<li>São dados que estão fora do banco de dados</li>
-							<li>Abstraidos pelo Postgresql através de uma tabela</li>
-							<li>Pode ser uma instância do Mongodb, Redis ou até mesmo um outro banco Postgresql</li>
+							<li>Abstraidos pelo PostgreSQL através de uma tabela</li>
+							<li>Pode ser uma instância do Mongodb, Redis ou até mesmo um outro banco PostgreSQL</li>
 						</ul>
 					</section>
 
@@ -219,11 +242,11 @@ SELECT * FROM house_alliances;
 
 				<section>
 					<h2>Foreign Table Inheritance</h2>
-					<p>Portando FTI é basicamente um particionamento em um serviço externo</p>
+					<p>Portando FTI é basicamente um particionamento usando um ou mais serviços externos</p>
 				</section>
 
 				<section>
-					<h2>UPSERT</h2>
+					<h1>UPSERT</h1>
 					<p>Ou 'Insira ou Atualize'</p>
 				</section>
 
@@ -231,7 +254,7 @@ SELECT * FROM house_alliances;
 					<section>
 						<h2>UPSERT</h2>
 						<p>Dado uma tabela</p>
-						<table>
+						<table class="monospaced">
 							<thead>
 								<th>id</th>
 								<th>house</th>
@@ -247,16 +270,16 @@ SELECT * FROM house_alliances;
 					<section>
 						<h2>UPSERT</h2>
 						<pre><code class="sql" data-trim>
-	INSERT INTO houses (house)
-		VALUES ('Stark','Baratheon')
-		ON CONFLICT DO NOTHING;
+INSERT INTO houses (house)
+VALUES ('Stark','Baratheon')
+ON CONFLICT DO NOTHING;
 						</code></pre>
 					</section>
 
 					<section>
 						<h2>UPSERT</h2>
 						<p>Ao invés de recebermos um erro de chave duplicada temos</p>
-						<table>
+						<table class="monospaced">
 							<thead>
 								<th>id</th>
 								<th>house</th>
@@ -275,7 +298,7 @@ SELECT * FROM house_alliances;
 					<section>
 						<h2>UPSERT</h2>
 						<p>Outro exemplo</p>
-						<table>
+						<table class="monospaced">
 							<thead>
 								<th>id</th>
 								<th>name</th>
@@ -292,7 +315,7 @@ SELECT * FROM house_alliances;
 						<h2>UPSERT</h2>
 						<pre><code class="sql" data-trim>
 INSERT INTO characters (name, childs)
-VALUES ('Ned Stark', 1), ('Robert Baratheon', 23)
+VALUES ('Tywin Lannister', 1), ('Robert Baratheon', 23)
 ON CONFLICT (childs)
 DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 						</code></pre>
@@ -300,7 +323,7 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 
 					<section>
 						<h2>UPSERT</h2>
-						<table>
+						<table class="monospaced">
 							<thead>
 								<th>id</th>
 								<th>name</th>
@@ -321,11 +344,11 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 				</section>
 
 				<section>
-					<h2>Novos operadores e funções para JSONB</h2>
+					<h1>Novos operadores e funções para JSONB</h1>
 				</section>
 
 				<section>
-					<h2><code>jsonb || jsonb</code></h2>
+					<h2><code class="inline-code">jsonb || jsonb</code></h2>
 					<p>(concatenção)</p>
 					<pre><code class="sql">SELECT '{"evento": "rupy"}'::jsonb || '{"local": "TW"}'::jsonb;</code></pre>
 					<pre><code class="json">{"evento": "rupy", "local": "TW"}</code></pre>
@@ -333,21 +356,21 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 
 				<section>
 					<section>
-						<h2><code>jsonb - text/int</code></h2>
+						<h2><code class="inline-code">jsonb - text/int</code></h2>
 						<p>(remoção de chave/elemento de array)</p>
 						<pre><code class="sql">SELECT '{"evento": "rupy", "local": "TW"}'::jsonb - 'evento';</code></pre>
 						<pre><code class="json">{"local": "TW"}</code></pre>
 					</section>
 
 					<section>
-						<h2><code>jsonb - text/int</code></h2>
+						<h2><code class="inline-code">jsonb - text/int</code></h2>
 						<pre><code class="sql">SELECT '["azul","verde","vermelho"]'::jsonb - 1;</code></pre>
 						<pre><code class="json">["azul", "vermelho"]</code></pre>
 					</section>
 				</section>
 
 				<section>
-					<h2><code>json #- text[]</code></h2>
+					<h2><code class="inline-code">json #- text[]</code></h2>
 					<p>(remoção de chave ou elemento por json path)</p>
 					<pre><code class="sql">SELECT '{"evento": "rupy", "local": "TW",
        "linguagens": ["ruby", "python"]}'::jsonb
@@ -357,12 +380,12 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 				</section>
 
 				<section>
-					<h2><code>jsonb_set()</code></h2>
+					<h2><code class="inline-code">jsonb_set()</code></h2>
 					<p>(insere ou atualiza num jsonb)</p>
 				</section>
 
 				<section>
-					<h2><code>jsonb_set()</code></h2>
+					<h2><code class="inline-code">jsonb_set()</code></h2>
 					<p>Recebe até 4 paramêtros</p>
 					<ul>
 						<li>jsonb alvo</li>
@@ -373,7 +396,7 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 				</section>
 
 				<section>
-					<h2><code>jsonb_set()</code></h2>
+					<h2><code class="inline-code">jsonb_set()</code></h2>
 					<pre><code class="sql">SELECT
     jsonb_set('{"evento": "rupy", "linguagens": ["python"]}'::jsonb,
 	'{linguagens,2}',
@@ -384,11 +407,48 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 				<section>
 					<h2>Outras melhorias</h2>
 					<ul>
-						<li class="fragment">Otimização de ordenações (até 3x mais rapidas para ordenação em um campo <code>TEXT</code>)</li>
-						<li class="fragment">Trocar tabela <code>UNLOGGED</code> para <code>LOGGED</code> (ou vice-versa) sem precisar replicar a tabela</li>
-						<li class="fragment">Operações analíticas (<code>GROUPING, CUBE, ROLLUP</code>)</li>
+						<li class="fragment">Otimização de ordenações (até 3x mais rápidas para ordenação em um campo <code>TEXT</code>)</li>
+						<li class="fragment">Trocar tabela <code class="inline-code">UNLOGGED</code> para <code class="inline-code">LOGGED</code> (ou vice-versa) sem precisar replicar a tabela</li>
+						<li class="fragment">Operações analíticas (<code class="inline-code">GROUPING</code>, <code class="inline-code">CUBE</code>, <code class="inline-code">ROLLUP</code>)</li>
 						<li class="fragment">Melhor escalabilidade vertical</li>
 					</ul>
+				</section>
+
+				<section>
+					<h2>Resumindo...</h2>
+					<ul>
+						<li>Segurança
+							<ul>
+								<li>Row-level security policy</li>
+							</ul>
+						</li>
+						<li>Performance
+							<ul>
+								<li>Block-range indexes</li>
+								<li>TEXT search</li>
+								<li>LOGGED/UNLOGGED sem replicação</li>
+								<li>Escalabilidade vertical</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Resumindo...</h2>
+					<ul>
+						<li>Novas sintaxes
+							<ul>
+								<li>UPSERT</li>
+								<li>GROUPING/ROLLUP/CUBE</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h1>Obrigado!</h1>
+					<p>Perguntas?</p>
 				</section>
 			</div>
 
@@ -405,7 +465,7 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 				controls: true,
 				progress: true,
 				history: true,
-				center: true,
+				center: false,
 
 				transition: 'slide', // none/fade/slide/convex/concave/zoom
 
