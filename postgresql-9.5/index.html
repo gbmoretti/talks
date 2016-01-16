@@ -38,11 +38,9 @@
 	<body>
 
 		<div class="reveal">
-			<header style="position: absolute;top: 50px; left: 100px; z-index:500; font-size:100px;background-color: rgba(0,0,0,0.5)"></header>
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides" style="background-image: url('postgres.png'); background-position: bottom right; background-repeat: no-repeat;">
 				<section>
-					<style>.header1 header:after { content: "Header 1 Example"; }</style>
 					<h1>PostgreSQL 9.5</h1>
 					<h3>O que há de novo?</h3>
 					<p><small>Por <a href="http://github.com/gbmoretti">Guilherme Moretti</a></small></p>
@@ -139,7 +137,7 @@
 					<h2>Row-level security policy (RLS)</h2>
 					<p>Posso criar uma política de segurança assim:</p>
 					<pre><code class="sql" data-trim>
-CREATE POLICY policy_user_alliances ON house_alliances
+CREATE POLICY policy_house_alliances ON house_alliances
    FOR ALL
    TO PUBLIC
    USING (house = current_user);
@@ -183,30 +181,19 @@ SELECT * FROM house_alliances;
 				<section>
 					<h2>Block-range Indexes (BRIN)</h2>
 					<ul>
+						<li>Combina o BTREE com um vetor</li>
+						<li>Gerando índices que representam blocos de registros</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Block-range Indexes (BRIN)</h2>
+					<ul>
 						<li>Um índice que usa muito menos bytes</li>
 						<li>Com performance melhor para <code class="inline-code">UPDATE</code>/<code class="inline-code">INSERT</code>/<code class="inline-code">DELETE</code></li>
 						<li>Menos performático em consultas</li>
 					</ul>
 				</section>
-
-				<!-- <section>
-					<section>
-						<h2>BTREE</h2>
-						<img src="btree0.svg" width="800" height="500" class="fragment current-visible display-none">
-						<img src="btree1.svg" width="800" height="500" class="fragment current-visible display-none">
-						<img src="btree2.svg" width="800" height="500" class="fragment current-visible display-none">
-						<img src="btree3.svg" width="800" height="500" class="fragment current-visible display-none">
-						<img src="btree4.svg" width="800" height="500" class="fragment current-visible display-none">
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h2>BRIN</h2>
-
-					</section>
-				</section> -->
-
 
 				<section>
 					<h1>Foreign Table Inheritance</h1>
@@ -306,7 +293,7 @@ ON CONFLICT DO NOTHING;
 							</thead>
 							<tbody>
 								<tr><td>1</td><td>Ned Stark</td><td>5</td></tr>
-								<tr><td>2</td><td>Tywin Lannister</td><td>1</td></tr>
+								<tr><td>2</td><td>Robert Baratheon</td><td>13</td></tr>
 							</tbody>
 						</table>
 					</section>
@@ -315,7 +302,7 @@ ON CONFLICT DO NOTHING;
 						<h2>UPSERT</h2>
 						<pre><code class="sql" data-trim>
 INSERT INTO characters (name, childs)
-VALUES ('Tywin Lannister', 1), ('Robert Baratheon', 23)
+VALUES ('Tywin Lannister', 2), ('Robert Baratheon', 1)
 ON CONFLICT (childs)
 DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 						</code></pre>
@@ -331,8 +318,8 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 							</thead>
 							<tbody>
 								<tr><td>1</td><td>Ned Stark</td><td>5</td></tr>
+								<tr><td>3</td><td>Robert Baratheon</td><td>14</td></tr>
 								<tr><td>2</td><td>Tywin Lannister</td><td>2</td></tr>
-								<tr><td>3</td><td>Robert Baratheon</td><td>23</td></tr>
 							</tbody>
 						</table>
 					</section>
@@ -399,9 +386,9 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 					<h2><code class="inline-code">jsonb_set()</code></h2>
 					<pre><code class="sql">SELECT
     jsonb_set('{"evento": "rupy", "linguagens": ["python"]}'::jsonb,
-	'{linguagens,2}',
+	'{linguagens,1}',
 	"ruby");</code></pre>
-					<pre><code class="json">{"evento": "rupy", "local": "TW", "linguagens": ["ruby", "python"]}</code></pre>
+					<pre><code class="json">{"evento": "rupy", "local": "TW", "linguagens": ["python","ruby"]}</code></pre>
 				</section>
 
 				<section>
@@ -446,12 +433,11 @@ DO UPDATE SET childs = characters.childs + EXCLUDED.childs;
 				</section>
 
 
-				<section>
-					<h1>Obrigado!</h1>
-					<p>Perguntas?</p>
+				<section data-background="yknjs.gif">
+					<h1 style="color: rgb(201, 190, 31)">Obrigado!</h1>
+					<p style="color: rgb(201, 190, 31)">Perguntas?</p>
 				</section>
 			</div>
-
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
