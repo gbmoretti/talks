@@ -1,0 +1,53 @@
+tentar fazer um storytelling? sera que vc consegue?
+
+- porque API's são legais
+
+APIs para desenvelvedores
+- Project Oxford
+- - Visão computacional
+- - - Analise de imagem
+- - - OCR
+- - - Detecção de exploração infantil (!!!)
+- - - Detecção facial
+- - Voz
+- - - Reconhecimento de voz
+- - - Speech do text
+- - - Text to speech
+- - NPL
+- - Language Understanding Intelligent Service (LUIS) (parece com o API.ai)
+- API.ai
+- - API de conversação
+- - Você 'treina' um agente com palavras chaves e ações que um usuário pode querer tomar
+- - E depois ele retorna um JSON estruturado com a intenção do usuario e contexto
+
+APIs de negocio
+- (falar antes de algumas APIs que ele integra) Segment.io
+- - Google Analytics
+- - Optimezely
+- - Rollbar
+- - Mailchimp
+- - Customer.io
+- - Amplitude
+- - Segment.io funciona como 'gateway'
+- - Você envia a requisição pra ele no formato q ele espera
+- - E ele reformata a requisição pra todos os serviços que voce quiser.
+- Zapier
+- - Parecido com IFTTT
+- - Um 'integrador' de API
+- - Vocẽ consegue fazer varias magicas
+- - Tipo um formulario do GForms alimenta um planilha do Docs que faz uma requisição pra uma API
+- Twilio
+- - API de ligações telefonicas
+- - Tem serviços como validação de numero de telefone
+- - Ligação e reprodução de gravação
+- Sendgrid
+- - Serviço de envio de email
+- - Também faz um analytics dos emails que voce envia atraves dele
+- Uber
+- Agrid
+
+
+
+- Coisas que eu gostaria de ver
+- - API de bancos
+- - Governo (open data)
